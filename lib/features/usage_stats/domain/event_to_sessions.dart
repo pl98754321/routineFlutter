@@ -1,9 +1,11 @@
 import 'models/usage_event.dart';
 import 'models/usage_session.dart';
 
-List<UsageSession> eventsToSessions(List<UsageEvent> events) {
+List<UsageSession> eventsToSessions(
+  List<UsageEvent> events,
+  Map<String, UsageEvent> lastStartMap,
+) {
   List<UsageSession> sessions = [];
-  final Map<String, UsageEvent> lastStartMap = {};
 
   for (var e in events) {
     switch (e.eventType) {

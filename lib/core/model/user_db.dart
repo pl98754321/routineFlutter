@@ -1,18 +1,18 @@
-class User {
+class UserDB {
   final int id;
   final String name;
   final String email;
   final DateTime createdAt;
 
-  User({
+  UserDB({
     required this.id,
     required this.name,
     required this.email,
     required this.createdAt,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserDB.fromJson(Map<String, dynamic> json) {
+    return UserDB(
       id: json['id'],
       name: json['name'],
       email: json['email'],

@@ -1,25 +1,25 @@
-class UsageSession {
+class UsageSessionDB {
   final int id;
   final int userId;
-  final int appId;
+  final String packageName;
   final DateTime startTime;
   final DateTime endTime;
   final int duration; // วินาที
 
-  UsageSession({
+  UsageSessionDB({
     required this.id,
     required this.userId,
-    required this.appId,
+    required this.packageName,
     required this.startTime,
     required this.endTime,
     required this.duration,
   });
 
-  factory UsageSession.fromJson(Map<String, dynamic> json) {
-    return UsageSession(
+  factory UsageSessionDB.fromJson(Map<String, dynamic> json) {
+    return UsageSessionDB(
       id: json['id'],
       userId: json['user_id'],
-      appId: json['app_id'],
+      packageName: json['package_name'],
       startTime: DateTime.parse(json['start_time']),
       endTime: DateTime.parse(json['end_time']),
       duration: json['duration'],
@@ -30,7 +30,7 @@ class UsageSession {
     return {
       'id': id,
       'user_id': userId,
-      'app_id': appId,
+      'package_name': packageName,
       'start_time': startTime.toIso8601String(),
       'end_time': endTime.toIso8601String(),
       'duration': duration,

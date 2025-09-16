@@ -1,11 +1,13 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseConfig {
-  static const String url = "https://<YOUR-PROJECT-REF>.supabase.co";
-  static const String anonKey = "<YOUR-ANON-KEY>";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+class SupabaseConfig {
   static Future<void> init() async {
-    await Supabase.initialize(url: url, anonKey: anonKey);
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL']!,
+      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+    );
   }
 
   static SupabaseClient get client => Supabase.instance.client;

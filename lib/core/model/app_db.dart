@@ -1,4 +1,4 @@
-class App {
+class AppDB {
   final int id;
   final int userId;
   final String packageName;
@@ -6,7 +6,7 @@ class App {
   final String? iconUrl;
   final DateTime installedAt;
 
-  App({
+  AppDB({
     required this.id,
     required this.userId,
     required this.packageName,
@@ -15,8 +15,8 @@ class App {
     required this.installedAt,
   });
 
-  factory App.fromJson(Map<String, dynamic> json) {
-    return App(
+  factory AppDB.fromJson(Map<String, dynamic> json) {
+    return AppDB(
       id: json['id'],
       userId: json['user_id'],
       packageName: json['package_name'],
