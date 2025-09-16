@@ -37,7 +37,7 @@ class MainActivity: FlutterActivity() {
             getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
         val end = System.currentTimeMillis()
-        val begin = end - 1000L * 60 * 60 * 24 // 1 วันย้อนหลัง
+        val begin = end - 1000L * 60 * 60 * 24 * 5
 
         val stats = usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_DAILY, begin, end
@@ -50,7 +50,8 @@ class MainActivity: FlutterActivity() {
                 "appName" to info["appName"],
                 "icon" to info["icon"], // base64
                 "totalTimeUsed" to it.totalTimeInForeground,
-                "lastTimeUsed" to it.lastTimeUsed
+                "lastTimeUsed" to it.lastTimeUsed,
+                "firstTimeStamp" to it.firstTimeStamp
             )
         }
     }
@@ -59,34 +60,36 @@ class MainActivity: FlutterActivity() {
      * ดึงรายการเหตุการณ์การใช้งานย้อนหลัง 1 วัน
      */
     private fun getUsageEvents(): List<Map<String, Any?>> {
-        val usageStatsManager =
-            getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-
+        val usm = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val end = System.currentTimeMillis()
-        val begin = end - 1000L * 60 * 60 * 24 // 1 วันย้อนหลัง
+        val begin = end - 24L * 60 * 60 * 1000
 
-        val events = usageStatsManager.queryEvents(begin, end)
-        val event = android.app.usage.UsageEvents.Event()
-        val list = mutableListOf<Map<String, Any?>>()
+        val evs = usm.queryEvents(begin, end)
+        val e = android.app.usage.UsageEvents.Event()
+        val out = mutableListOf<Map<String, Any?>>()
 
-        while (events.hasNextEvent()) {
-            events.getNextEvent(event)
-            if (event.eventType == android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND ||
-                event.eventType == android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND
-            ) {
-                val info = com.example.routin_flutter.services.AppInfoHelper.getAppInfo(this, event.packageName)
+        val interested = setOf(
+            android.app.usage.UsageEvents.Event.ACTIVITY_RESUMED,
+            android.app.usage.UsageEvents.Event.ACTIVITY_STOPPED,
+        )
 
-                list.add(
+        while (evs.hasNextEvent()) {
+            evs.getNextEvent(e)
+            if (e.eventType in interested) {
+                val info = com.example.routin_flutter.services.AppInfoHelper
+                    .getAppInfo(this, e.packageName ?: "")
+                out.add(
                     mapOf(
-                        "packageName" to event.packageName,
+                        "packageName" to (e.packageName ?: ""),
+                        "className" to e.className,
                         "appName" to info["appName"],
-                        "icon" to info["icon"],  // Base64 string
-                        "eventType" to event.eventType, // 1 = Foreground, 2 = Background
-                        "timeStamp" to event.timeStamp
+                        "icon" to info["icon"],
+                        "eventType" to e.eventType,
+                        "timeStamp" to e.timeStamp
                     )
                 )
             }
         }
-        return list
+        return out
     }
 }

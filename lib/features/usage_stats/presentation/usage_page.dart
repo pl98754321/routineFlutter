@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../core/logging.dart';
+import 'package:routin_flutter/features/usage_stats/domain/models/usage_event.dart';
 import '../domain/event_to_sessions.dart';
 import '../domain/models/app_usage.dart';
 import '../domain/models/usage_session.dart';
 import '../services/app_usage_services.dart';
 import 'widget/usage_calendar.dart';
 import 'widget/usage_event_list.dart';
+import 'widget/usage_event_list_detail.dart';
 import 'widget/usage_summary_list.dart';
 
 class UsagePage extends StatefulWidget {
@@ -19,6 +20,7 @@ class _UsagePageState extends State<UsagePage> {
   final service = AppUsageService();
   List<AppUsage> usages = [];
   List<UsageSession> sessions = [];
+  List<UsageEvent> events = [];
 
   @override
   void initState() {
@@ -29,12 +31,14 @@ class _UsagePageState extends State<UsagePage> {
   Future<void> _refreshData() async {
     final usageData = await service.getTodayUsage();
     final eventData = await service.getUsageEvents();
-    await AppLogger.log("Fetching usage data...");
-    await AppLogger.log("Got ${sessions.length} sessions");
-    (eventData);
+    final filtered = eventData
+        .where((e) => e.packageName == "com.example.routin_flutter")
+        .toList();
+
     setState(() {
       usages = usageData.where((e) => e.totalTimeUsed > 60 * 1000).toList();
       sessions = eventsToSessions(eventData);
+      events = filtered;
     });
   }
 
@@ -50,6 +54,8 @@ class _UsagePageState extends State<UsagePage> {
             UsageSummaryList(usages: usages),
             const Divider(),
             UsageEventList(sessions: sessions),
+            const Divider(),
+            UsageEventListDetail(events: events),
             const Divider(),
             const Padding(
               padding: EdgeInsets.all(8.0),

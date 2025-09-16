@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:routin_flutter/core/app_theme.dart';
-import 'package:routin_flutter/core/logging.dart';
 import 'package:routin_flutter/features/usage_stats/presentation/usage_page.dart';
 
 void main() async {
-  await AppLogger.init();
-  await AppLogger.log("Application started");
   runApp(const MyApp());
 }
 

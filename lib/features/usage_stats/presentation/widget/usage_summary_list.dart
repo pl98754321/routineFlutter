@@ -22,7 +22,8 @@ class UsageSummaryList extends StatelessWidget {
             title: Text(usage.appName ?? usage.packageName),
             subtitle: Text(
               "Used: ${(usage.totalTimeUsed / 1000 ~/ 60)} min\n"
-              "Last used: ${DateTime.fromMillisecondsSinceEpoch(usage.lastTimeUsed)}",
+              "Last used: ${DateTime.fromMillisecondsSinceEpoch(usage.lastTimeUsed)}\n"
+              "First used: ${DateTime.fromMillisecondsSinceEpoch(usage.firstTimeStamp)}",
             ),
           ),
         ),

@@ -4,6 +4,7 @@ class AppUsage {
   final String? icon; // base64 string
   final int totalTimeUsed; // milliseconds
   final int lastTimeUsed; // epoch ms
+  final int firstTimeStamp;
 
   AppUsage({
     required this.packageName,
@@ -11,6 +12,7 @@ class AppUsage {
     this.icon,
     required this.totalTimeUsed,
     required this.lastTimeUsed,
+    required this.firstTimeStamp,
   });
 
   factory AppUsage.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class AppUsage {
       icon: json['icon'],
       totalTimeUsed: json['totalTimeUsed'] ?? 0,
       lastTimeUsed: json['lastTimeUsed'] ?? 0,
+      firstTimeStamp: json['firstTimeStamp'] ?? 0,
     );
   }
 
@@ -30,6 +33,7 @@ class AppUsage {
       'icon': icon,
       'totalTimeUsed': totalTimeUsed,
       'lastTimeUsed': lastTimeUsed,
+      'firstTimeStamp': firstTimeStamp,
     };
   }
 

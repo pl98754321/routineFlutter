@@ -22,7 +22,12 @@ class AppUsageService {
     try {
       final String result = await platform.invokeMethod('getUsageEvents');
       final List<dynamic> data = jsonDecode(result);
-      return data.map((e) => UsageEvent.fromJson(e)).toList();
+      final List<dynamic> data2 = data;
+      final Set<dynamic> event_unique = data2
+          .map((e) => e["eventType"])
+          .toSet();
+      print(event_unique);
+      return data2.map((e) => UsageEvent.fromJson(e)).toList();
     } on PlatformException catch (e) {
       throw Exception("Failed to get usage events: ${e.message}");
     }
