@@ -3,7 +3,7 @@ class AppDB {
   final int userId;
   final String packageName;
   final String appName;
-  final String? iconUrl;
+  final String? icon;
   final DateTime installedAt;
 
   AppDB({
@@ -11,7 +11,7 @@ class AppDB {
     required this.userId,
     required this.packageName,
     required this.appName,
-    this.iconUrl,
+    this.icon,
     required this.installedAt,
   });
 
@@ -21,7 +21,7 @@ class AppDB {
       userId: json['user_id'],
       packageName: json['package_name'],
       appName: json['app_name'],
-      iconUrl: json['icon_url'],
+      icon: json['icon'],
       installedAt: DateTime.parse(json['installed_at']),
     );
   }
@@ -32,7 +32,7 @@ class AppDB {
       'user_id': userId,
       'package_name': packageName,
       'app_name': appName,
-      'icon_url': iconUrl,
+      'icon': icon,
       'installed_at': installedAt.toIso8601String(),
     };
   }

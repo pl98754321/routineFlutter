@@ -12,7 +12,7 @@ class UsageSessionService {
   }
 
   /// บันทึก UsageSessions หลายรายการ
-  Future<void> bulkSaveUsageSessions(List<UsageSessionDB> sessions) async {
+  Future<void> saveBulkUsageSessions(List<UsageSessionDB> sessions) async {
     if (sessions.isEmpty) return;
 
     final data = sessions.map((s) => s.toJson()).toList();

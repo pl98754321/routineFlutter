@@ -18,7 +18,9 @@ class AppUsageService {
   }
 
   /// ดึง events (foreground/background) ย้อนหลัง 1 วัน
-  Future<List<UsageEvent>> getUsageEvents(DateTime beginTimestamp) async {
+  Future<List<UsageEvent>> getUsageEvents(
+    DateTime lastestFetchTimestamp,
+  ) async {
     try {
       final String result = await platform.invokeMethod('getUsageEvents');
       final List<dynamic> data = jsonDecode(result);

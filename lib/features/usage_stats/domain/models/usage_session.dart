@@ -1,3 +1,5 @@
+import '../../../../core/model/usage_session_db.dart';
+
 class UsageSession {
   final String packageName;
   final String appName;
@@ -35,6 +37,17 @@ class UsageSession {
       'endTime': endTime.millisecondsSinceEpoch,
       'duration': duration.inMilliseconds,
     };
+  }
+
+  UsageSessionDB toUsageSessionDB(int userId) {
+    return UsageSessionDB(
+      id: 0,
+      userId: userId,
+      packageName: packageName,
+      startTime: startTime,
+      endTime: endTime,
+      duration: duration.inSeconds,
+    );
   }
 
   @override
